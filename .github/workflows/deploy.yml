@@ -1,0 +1,37 @@
+name: Test SSM Schema Push
+
+on:
+  workflow_dispatch:
+
+jobs:
+  push-schema:
+    runs-on: ubuntu-latest
+
+    env:
+      INSTANCE_ID: "i-0123456789abcdef"   # Replace with real instance
+      BRANCH_NAME: ${{ github.ref_name }}
+
+    steps:
+
+      - name: Push schema via SSM
+        run: |
+          echo "Branch: ${BRANCH_NAME}"
+          echo "Instance: ${INSTANCE_ID}"
+
+          SSM_COMMAND="aws ssm send-command \
+                      --instance-ids \"${INSTANCE_ID}\" \
+                      --document-name \"AWS-RunShellScript\" \
+                      --comment \"Schema Push Test\" \
+                      --parameters \"commands=[
+                        \\\"#!/bin/bash\\\",
+                        \\\"set -e\\\",
+                        \\\"echo 'Finding Docker container...'\\\",
+                        \\\"CONTAINER_ID=\\\$(docker ps -q | head -n 1)\\\",
+                        \\\"if [ -z \\\\\\\"\\\$CONTAINER_ID\\\\\\\" ]; then echo 'No container found'; exit 1; fi\\\",
+                        \\\"echo 'Container ID: '\\\$CONTAINER_ID\\\",
+                        \\\"docker exec \\\$CONTAINER_ID /bin/bash -c 'cd /app && npx tsx scripts/push-schema-to-tenants.ts ${BRANCH_NAME}'\\\"
+                      ]\" \
+                      --query 'Command.CommandId' \
+                      --output text"          
+          echo "$SSM_COMMAND"
+
