@@ -1,0 +1,23 @@
+apiVersion: karpenter.k8s.aws/v1
+kind: EC2NodeClass
+metadata:
+  name: gpu
+spec:
+  amiFamily: AL2023
+
+  kubelet:
+    clusterDNS:
+      - 10.100.0.10
+
+  role: KarpenterNodeRole-mlops-cluster
+
+  subnetSelectorTerms:
+    - tags:
+        karpenter.sh/discovery: mlops-cluster
+
+  securityGroupSelectorTerms:
+    - tags:
+        karpenter.sh/discovery: mlops-cluster
+
+  amiSelectorTerms:
+    - alias: al2023@latest

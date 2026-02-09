@@ -1,0 +1,26 @@
+apiVersion: karpenter.sh/v1
+kind: NodePool
+metadata:
+  name: gpu-spot
+spec:
+  template:
+    spec:
+      nodeClassRef:
+        group: karpenter.k8s.aws
+        kind: EC2NodeClass
+        name: gpu
+
+      requirements:
+        # exactly one GPU (cheapest possible)
+        - key: "karpenter.k8s.aws/instance-gpu-count"
+          operator: In
+          values: ["1"]
+
+        # prefer spot but allow fallback
+        - key: "karpenter.sh/capacity-type"
+          operator: In
+          values: ["spot","on-demand"]
+
+  disruption:
+    consolidationPolicy: WhenEmpty
+    consolidateAfter: 30s

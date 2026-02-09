@@ -1,0 +1,9 @@
+# --- Inference API ---
+fastapi==0.110.0
+uvicorn[standard]==0.29.0
+pillow==10.2.0
+numpy==1.26.4
+
+# --- PyTorch (CPU ONLY) ---
+torch==2.1.0+cpu
+torchvision==0.16.0+cpu

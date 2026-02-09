@@ -1,0 +1,21 @@
+apiVersion: serving.kserve.io/v1alpha1
+kind: ClusterServingRuntime
+metadata:
+  name: kserve-torchserve
+spec:
+  protocolVersions:
+    - v1
+  supportedModelFormats:
+    - name: pytorch
+      version: "1"
+      autoSelect: true
+  containers:
+    - name: kserve-container
+      image: pytorch/torchserve-kfs:0.9.0
+      args:
+        - torchserve
+        - --start
+        - --model-store=/mnt/models/model-store
+        - --ts-config=/mnt/models/config/config.properties
+      ports:
+        - containerPort: 8080

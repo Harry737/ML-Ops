@@ -1,0 +1,28 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: mnist-train
+spec:
+  backoffLimit: 0
+  template:
+    spec:
+      serviceAccountName: mnist-sa
+      restartPolicy: Never
+
+      containers:
+        - name: trainer
+          image: 021518179741.dkr.ecr.ap-south-1.amazonaws.com/mlops:v1
+
+          resources:
+            limits:
+              nvidia.com/gpu: 1
+              cpu: "2"
+              memory: "2Gi"
+
+          env:
+            - name: AWS_REGION
+              value: ap-south-1
+            - name: AWS_DEFAULT_REGION
+              value: ap-south-1
+
+          command: ["python","main.py","--save-model"]

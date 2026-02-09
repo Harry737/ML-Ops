@@ -1,0 +1,19 @@
+apiVersion: serving.kserve.io/v1beta1
+kind: InferenceService
+metadata:
+  name: mnist
+spec:
+  predictor:
+    serviceAccountName: mnist-sa
+    model:
+      runtime: kserve-torchserve
+      modelFormat:
+        name: pytorch
+      storageUri: s3://mlops-harry/mnist/1770563371/
+      resources:
+        requests:
+          cpu: "100m"
+          memory: "512Mi"
+        limits:
+          cpu: "1"
+          memory: "1Gi"
