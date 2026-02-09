@@ -9,7 +9,7 @@ spec:
       runtime: kserve-torchserve
       modelFormat:
         name: pytorch
-      storageUri: s3://mlops-harry/mnist/1770563371/
+      storageUri: s3://mlops-harry/mnist/1770651133/
       resources:
         requests:
           cpu: "100m"
