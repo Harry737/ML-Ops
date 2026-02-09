@@ -19,7 +19,7 @@ async function predict() {
   };
 
   const res = await axios.post(
-    "http://localhost:8080/v1/models/mnist:predict",
+    "http://localhost:8081/v1/models/mnist:predict",
     payload,
     { headers: { "Content-Type": "application/json" } }
   );
