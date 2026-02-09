@@ -48,10 +48,17 @@ jobs:
             --platform linux/amd64 \
             --tag 021518179741.dkr.ecr.$AWS_REGION.amazonaws.com/$ECR_REPO:$IMAGE_TAG \
             --tag 021518179741.dkr.ecr.$AWS_REGION.amazonaws.com/$ECR_REPO:latest \
+            --secret id=aws_access_key,env=AWS_ACCESS_KEY_ID \
+            --secret id=aws_secret_key,env=AWS_SECRET_ACCESS_KEY \
+            --secret id=aws_region,env=AWS_DEFAULT_REGION \
             --cache-from=type=registry,ref=021518179741.dkr.ecr.$AWS_REGION.amazonaws.com/$ECR_REPO:buildcache \
             --cache-to=type=registry,ref=021518179741.dkr.ecr.$AWS_REGION.amazonaws.com/$ECR_REPO:buildcache,mode=max \
             --push \
             .
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_DEFAULT_REGION: ${{ env.AWS_REGION }}
 
       - name: Install kubectl
         uses: azure/setup-kubectl@v4
