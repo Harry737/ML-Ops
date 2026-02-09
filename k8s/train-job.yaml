@@ -1,7 +1,7 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: mnist-train
+  name: mnist-train-JOB_ID
 spec:
   backoffLimit: 0
   template:

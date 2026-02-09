@@ -72,4 +72,4 @@ jobs:
       # ---- START TRAINING ----
       - name: Submit training job
         run: |
-          sed "s|IMAGE_TAG|$IMAGE_TAG|g" k8s/train-job.yaml | kubectl apply -f -
+          sed "s|IMAGE_TAG|$IMAGE_TAG|g; s|JOB_ID|$IMAGE_TAG|g" k8s/train-job.yaml | kubectl apply -f -
