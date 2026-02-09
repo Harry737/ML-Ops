@@ -44,7 +44,7 @@ jobs:
       # ---- BUILD & PUSH ----
       - name: Build and Push image (with registry cache)
         run: |
-          docker buildx build \
+          cd train && docker buildx build \
             --platform linux/amd64 \
             --tag 021518179741.dkr.ecr.$AWS_REGION.amazonaws.com/$ECR_REPO:$IMAGE_TAG \
             --tag 021518179741.dkr.ecr.$AWS_REGION.amazonaws.com/$ECR_REPO:latest \
