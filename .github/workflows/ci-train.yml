@@ -3,6 +3,9 @@ name: Build and Train
 on:
   push:
     branches: [ main ]
+    paths-ignore:
+      - '.github/workflows/promote-model.yml'
+      - 'k8s/argo/**'
 
 env:
   AWS_REGION: ap-south-1

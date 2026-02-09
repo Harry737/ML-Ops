@@ -4,6 +4,9 @@ on:
   repository_dispatch:
     types: [model_uploaded]
 
+permissions:
+  contents: write
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
