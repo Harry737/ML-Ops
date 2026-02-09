@@ -1,0 +1,26 @@
+name: Deploy Model
+
+on:
+  repository_dispatch:
+    types: [model_uploaded]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Update model path
+        run: |
+          MODEL=${{ github.event.client_payload.model_path }}
+          echo "Deploying $MODEL"
+          sed -i "s|^\([[:space:]]*storageUri:\).*|\1 $MODEL|" k8s/argo/inference.yaml
+
+      - name: Commit
+        run: |
+          git config user.name "mlops-bot"
+          git config user.email "bot@mlops"
+          git add k8s/argo/inference.yaml
+          git commit -m "Deploy new model $MODEL"
+          git push
